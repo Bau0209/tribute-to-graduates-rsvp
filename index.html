@@ -30,7 +30,7 @@
         attendance: this.attendance.value
       };
 
-      const res = await fetch("http://localhost:5000/api/rsvp", {
+      const res = await fetch("https://tribute-to-graduates-api.onrender.com/api/rsvp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
