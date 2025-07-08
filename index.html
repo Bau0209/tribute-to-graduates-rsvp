@@ -7,14 +7,11 @@
 <body>
   <h1>RSVP: Tribute to Graduates</h1>
   <form id="rsvpForm">
-    <input type="text" name="name" placeholder="Your Name" required><br><br>
-    <input type="email" name="email" placeholder="Your Email" required><br><br>
-    <select name="attendance" required>
-      <option value="">Will you attend?</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-      <option value="Maybe">Maybe</option>
-    </select><br><br>
+    <input type="text" name="first_name" placeholder="First Name" required><br><br>
+    <input type="text" name="middle_initial" placeholder="Middle Initial" maxlength="2"><br><br>
+    <input type="text" name="last_name" placeholder="Last Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="text" name="contact_number" placeholder="Contact Number" required><br><br>
     <button type="submit">Submit RSVP</button>
   </form>
 
@@ -25,20 +22,27 @@
       e.preventDefault();
 
       const data = {
-        name: this.name.value,
+        first_name: this.first_name.value,
+        middle_initial: this.middle_initial.value,
+        last_name: this.last_name.value,
         email: this.email.value,
-        attendance: this.attendance.value
+        contact_number: this.contact_number.value
       };
 
-      const res = await fetch("https://tribute-to-graduates-api.onrender.com/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+      try {
+        const res = await fetch("https://tribute-to-graduates-api.onrender.com/api/rsvp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
-      const result = await res.json();
-      document.getElementById("message").innerText = result.message || "RSVP sent!";
-      this.reset();
+        const result = await res.json();
+        document.getElementById("message").innerText = result.message || "RSVP sent!";
+        this.reset();
+      } catch (error) {
+        document.getElementById("message").innerText = "Failed to submit RSVP.";
+        console.error("Submission error:", error);
+      }
     });
   </script>
 </body>
