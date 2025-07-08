@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RSVP – Tribute to Graduates</title>
+</head>
+<body>
+  <h1>RSVP: Tribute to Graduates</h1>
+  <form id="rsvpForm">
+    <input type="text" name="name" placeholder="Your Name" required><br><br>
+    <input type="email" name="email" placeholder="Your Email" required><br><br>
+    <select name="attendance" required>
+      <option value="">Will you attend?</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+      <option value="Maybe">Maybe</option>
+    </select><br><br>
+    <button type="submit">Submit RSVP</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    document.getElementById('rsvpForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const data = {
+        name: this.name.value,
+        email: this.email.value,
+        attendance: this.attendance.value
+      };
+
+      const res = await fetch("http://localhost:5000/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      document.getElementById("message").innerText = result.message || "RSVP sent!";
+      this.reset();
+    });
+  </script>
+</body>
+</html>
